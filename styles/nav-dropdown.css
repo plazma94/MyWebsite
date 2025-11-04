@@ -1,0 +1,99 @@
+/* Gallery dropdown (header) */
+
+.c-nav__item--gallery {
+  position: relative;
+  --dd-gap: 8px;
+}
+
+.c-nav__item--gallery::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 100%;
+  height: var(--dd-gap);
+}
+
+.c-dd {
+  position: absolute;
+  top: calc(100% + var(--dd-gap));
+  left: 0;
+  min-width: 220px;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--overlay-bg, rgba(0,0,0,.4));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 14px 40px -10px rgba(0,0,0,0.45),
+    0 1px 0 rgba(255,255,255,0.06) inset;
+  backdrop-filter: blur(6px) saturate(140%);
+  -webkit-backdrop-filter: blur(6px) saturate(140%);
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(.98);
+  pointer-events: none;
+  z-index: 4000;
+}
+
+@media (hover:hover) and (pointer:fine){
+  .c-nav__item--gallery:hover .c-dd {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+}
+.c-nav__item--gallery:focus-within .c-dd,
+.c-dd.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Items */
+.c-dd__item {
+  appearance: none;
+  background: none;
+  border: 0;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 12px;
+  color: #e6e6e6;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background .18s ease, color .18s ease, opacity .18s ease;
+}
+.c-dd__item:hover,
+.c-dd__item:focus-visible {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  outline: none;
+}
+
+/* Coming Soon (disabled) */
+.c-dd__item[disabled],
+.c-dd__item[aria-disabled="true"] {
+  opacity: .45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+/* === Mobile-focused tweaks (append at end) ============================== */
+@media (max-width: 800px){
+  .c-nav__link{ padding: 12px 10px; } /* larger tap target */
+  .c-dd{
+    left: 50%;
+    min-width: 92vw;
+    transform: translate(-50%, -6px) scale(.98);
+  }
+  .c-nav__item--gallery:hover .c-dd,
+  .c-dd.open{
+    transform: translate(-50%, 0) scale(1);
+  }
+  .c-dd__item{
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+}

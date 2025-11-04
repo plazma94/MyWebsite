@@ -1,0 +1,211 @@
+/* Header layout + centered nav + right-side action pills (no font changes) */
+:root{
+  --hdr-pad-y: 14px;
+  --hdr-pad-x: 24px;
+  --hdr-maxw: 1280px;
+  --hdr-color: #fff;
+  --pill-bg: rgba(255,255,255,.08);
+  --pill-bg-h: rgba(255,255,255,.14);
+  --pill-dark: #0b0b0b;
+}
+
+/* Top header bar overlay like the reference */
+.c-header{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 7000;
+  color: var(--hdr-color);
+  background: linear-gradient(to bottom, rgba(0,0,0,.22), rgba(0,0,0,.05) 60%, transparent);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.c-header__inner{
+  position: relative; /* anchor for absolute-centered nav */
+  max-width: var(--hdr-maxw);
+  margin: 0 auto;
+  padding: var(--hdr-pad-y) var(--hdr-pad-x);
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* brand | spacer | actions */
+  align-items: center;
+  gap: 18px;
+}
+
+/* Brand */
+.c-header__brand{
+  color: inherit;
+  text-decoration: none;
+  line-height: 1;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ===== Absolute-centered primary nav */
+.c-nav{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 7050;
+  white-space: nowrap;
+}
+.c-nav__list{
+  display: inline-flex;
+  align-items: center;
+  gap: 36px;
+  margin: 0; padding: 0; list-style: none;
+}
+.c-nav__item{ position: relative; }
+
+/* ===== Gallery dropdown (compact + centered under trigger) */
+#galleryNavItem{ position: relative; }
+
+#galleryDropdown{
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 12px);
+  transform: translate(-50%, -6px) scale(.98);
+  transform-origin: top center;
+  z-index: 9000;
+
+  box-sizing: border-box;
+  width: auto !important;
+  min-width: 240px;
+  max-width: 340px;
+  display: block !important;
+  white-space: normal;
+  pointer-events: none;
+
+  padding: 8px;
+  background: rgba(16,16,16,.92);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.35);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+#galleryDropdown.open{
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0) scale(1);
+  pointer-events: auto;
+}
+#galleryDropdown .c-dd__item{
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .02em;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+#galleryDropdown .c-dd__item + .c-dd__item{ margin-top: 2px; }
+#galleryDropdown .c-dd__item:hover{ background: rgba(255,255,255,.08); }
+#galleryDropdown .c-dd__item[disabled],
+#galleryDropdown .c-dd__item[aria-disabled="true"]{ opacity: .45; cursor: not-allowed; }
+
+/* ===== Right-side actions (ENG pill + CONTACT pill) */
+.c-header__right{
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  justify-self: end;
+}
+
+/* Language pill — thinner white outline; DO NOT draw caret here.
+   We rely on the caret from styles.css (.c-lang__btn:after). */
+.c-lang__btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  padding-right: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.92);
+  background: var(--pill-bg);
+  color: var(--hdr-color);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .06s ease;
+  will-change: background-color, transform;
+  background-image: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* Kill any stray ::before caret that might be left from older CSS */
+.c-header .c-lang__btn::before{
+  content: none !important;
+  display: none !important;
+  width: 0 !important; height: 0 !important;
+  border: 0 !important;
+  background: none !important;
+}
+.c-lang__btn:hover{ background: var(--pill-bg-h); }
+.c-lang__btn:active{ transform: translateY(1px); }
+
+/* Still allow opening via the .open class (set by JS) */
+.c-lang{ position: relative; }
+/* Provide a visible style when JS adds .is-open as well (compatibility) */
+.c-lang__menu.is-open{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Abbr + full name formatting: "ENG - English" */
+.c-lang__menu .abbr{ font-weight: 800; }
+.c-lang__menu .full::before{ content: " - "; opacity: .9; }
+
+/* Contact pill — no black outline by default; black on hover/focus/active */
+.c-nav__cta{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: #fff;
+  color: var(--pill-dark);
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: .04em;
+  line-height: 1;
+  transition: background-color .2s ease, border-color .12s ease, transform .06s ease, box-shadow .12s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+.c-nav__cta:hover,
+.c-nav__cta:focus-visible,
+.c-nav__cta:active{
+  border-color: #111;
+}
+.c-nav__cta:active{ transform: translateY(1px); }
+
+/* Keep header above hero content */
+.c-header{ z-index: 7000; }
+
+/* Responsive */
+@media (max-width: 1120px){
+  .c-nav__list{ gap: 28px; }
+}
+@media (max-width: 960px){
+  .c-nav__list{ gap: 24px; }
+}
+@media (max-width: 760px){
+  .c-nav{ display: none; }
+  .c-header__inner{
+    grid-template-columns: auto 1fr auto;
+  }
+  .c-header__right{ justify-self: end; }
+}

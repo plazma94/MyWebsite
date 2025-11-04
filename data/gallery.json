@@ -1,0 +1,37 @@
+[
+  {
+    "src": "assets/apartments/C1_LivingRoom.jpg",
+    "alt": "C1 Living room",
+    "caption": "Apartment C1 — Living room"
+  },
+  {
+    "src": "assets/apartments/C1_Living-Kitchen.jpg",
+    "alt": "C1 Living room and kitchen",
+    "caption": "Apartment C1 — Living & Kitchen"
+  },
+  {
+    "src": "assets/apartments/C1_Kitchen.jpg",
+    "alt": "C1 Kitchen",
+    "caption": "Apartment C1 — Kitchen"
+  },
+  {
+    "src": "assets/apartments/C1_Office.jpg",
+    "alt": "C1 Office",
+    "caption": "Apartment C1 — Office"
+  },
+  {
+    "src": "assets/apartments/C1_Bedroom.jpg",
+    "alt": "C1 Bedroom",
+    "caption": "Apartment C1 — Bedroom"
+  },
+  {
+    "src": "assets/apartments/C1_Bathroom.jpg",
+    "alt": "C1 Bathroom",
+    "caption": "Apartment C1 — Bathroom"
+  },
+  {
+    "src": "assets/apartments/C1_Bathroom_1.jpg",
+    "alt": "C1 Bathroom alternate view",
+    "caption": "Apartment C1 — Bathroom (alt)"
+  }
+]

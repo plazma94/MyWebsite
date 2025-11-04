@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en" data-current-lang="eng">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MyWebsite — Cinematic Scroll (Reverse Enabled)</title>
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="stylesheet" href="styles/nav-dropdown.css" />
+  <!-- Header layout + pills + centered nav -->
+  <link rel="stylesheet" href="styles/nav-header.css" />
+  <link rel="stylesheet" href="styles/consent.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+
+  <!-- i18n BEFORE anything that mutates language-dependent text -->
+  <script src="js/i18n.js" defer></script>
+  <script src="js/contact-submit.js" defer></script>
+  <script src="js/lang-init.js" defer></script>
+  <script src="js/player.js" defer></script>
+  <script src="js/gated-scroll.js" defer></script>
+  <script src="js/header-reveal.js" defer></script>
+  <script src="js/tech-reveal.js" defer></script>
+  <script src="js/location-reveal.js" defer></script>
+  <script src="js/contact-reveal.js" defer></script>
+  <script src="js/hero-typography.js" defer></script>
+  <script src="js/house-detail.js" defer></script>
+  <script src="js/footer-smooth-scroll.js" defer></script>
+  <script src="js/brand-marquee.js" defer></script>
+  <script src="js/map-open.js" defer></script>
+  <script src="js/hero-scroll-to-brand.js" defer></script>
+  <script src="js/consent.js" defer></script>
+  <script src="js/email-protect.js" defer></script>
+
+  <!-- Mobile viewport + video preload tuning -->
+  <script src="js/mobile-optimizations.js" defer></script>
+
+  <!-- Gallery -->
+  <script src="js/gallery-albums.js" defer></script>
+  <script src="js/gallery.js" defer></script>
+  <script src="js/gallery-dropdown.js" defer></script>
+
+  <!-- Mobile header/menu logic -->
+  <script src="js/mobile-header.js" defer></script>
+
+  <!-- Language dropdown toggle (updated) -->
+  <script src="js/lang-dropdown-toggle.js" defer></script>
+
+<!-- GA4: blocked by default; runs only if analytics consent is true -->
+<script type="text/plain" data-consent="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+<script type="text/plain" data-consent="analytics">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXX', { anonymize_ip: true });
+</script>
+
+  <script>
+    (function(){
+      function reset(){
+        try { if('scrollRestoration' in history) history.scrollRestoration = 'auto'; } catch(e){}
+        [0,50,120].forEach(ms=>setTimeout(()=>{ try{window.scrollTo(0,0);}catch(_){ } }, ms));
+      }
+      window.addEventListener('load', reset, { once:true });
+      window.addEventListener('pageshow', e=>{ if(e && e.persisted) reset(); });
+    })();
+  </script>
+</head>
+<body>
+  <div id="top" style="position:absolute;inset:0 0 auto 0;height:0;"></div>
+
+  <!-- HEADER -->
+  <header class="c-header" id="cinematicHeader" aria-label="Primary">
+    <div class="c-header__inner">
+      <a class="c-header__brand" href="#top">
+        <span class="c-header__eyebrow">ARCHITHOR</span>
+        <span class="c-header__name">STUDIO</span>
+      </a>
+
+      <!-- Desktop nav (kept same structure/IDs so gallery.js works) -->
+      <nav class="c-nav" aria-label="Main navigation">
+        <ul class="c-nav__list">
+          <li class="c-nav__item c-nav__item--gallery" id="galleryNavItem">
+            <a href="#" id="galleryMenuBtn" class="c-nav__link c-nav__link--has-dd" aria-haspopup="true" aria-expanded="false">
+              GALLERY
+            </a>
+            <div class="c-dd" id="galleryDropdown" role="menu" aria-label="Choose apartment gallery">
+              <button class="c-dd__item" role="menuitem" data-album="apt1" disabled aria-disabled="true">Apartment 1 - COMING SOON</button>
+              <button class="c-dd__item" role="menuitem" data-album="apt2">Apartment 2 (A2)</button>
+              <button class="c-dd__item" role="menuitem" data-album="apt3" disabled aria-disabled="true">Apartment 3 - COMING SOON</button>
+              <button class="c-dd__item" role="menuitem" data-album="apt4">Apartment 4 (B2)</button>
+              <button class="c-dd__item" role="menuitem" data-album="apt5">Apartment 5 (C1)</button>
+            </div>
+          </li>
+          <li><a href="#map" class="c-nav__link" data-i18n="nav.map">MAP</a></li>
+          <li><a href="#technology" class="c-nav__link" data-i18n="nav.technology">TECHNOLOGY</a></li>
+        </ul>
+      </nav>
+
+      <div class="c-header__right">
+        <div class="c-lang">
+          <!-- Text only; caret is injected via CSS (prevents duplicate arrows) -->
+          <button class="c-lang__btn" type="button" aria-haspopup="listbox" aria-expanded="false" id="langSwitcherBtn">
+            ENG (English)
+          </button>
+          <ul class="c-lang__menu" role="listbox" aria-label="Languages" id="langSwitcherMenu" aria-hidden="true">
+            <li>
+              <button type="button" data-lang="eng" data-lang-name="English" role="option" aria-selected="true">
+                <span class="abbr">ENG</span><span class="full">English</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-lang="ger" data-lang-name="German" role="option">
+                <span class="abbr">GER</span><span class="full">German</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-lang="srb" data-lang-name="Serbian" role="option">
+                <span class="abbr">SRB</span><span class="full">Serbian</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <a href="#contact" class="c-nav__cta" data-i18n="nav.contactCta">CONTACT US</a>
+      </div>
+
+      <!-- MOBILE HAMBURGER -->
+      <button class="c-header__menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <span class="bar" aria-hidden="true"></span>
+        <span class="bar" aria-hidden="true"></span>
+        <span class="bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE FULL-SCREEN MENU (hidden to prevent flash) -->
+  <nav class="mnav" id="mobileNav" aria-label="Mobile menu" aria-hidden="true" hidden>
+    <div class="mnav__panel">
+      <div class="mnav__head">
+        <a class="mnav__brand" href="#top">
+          <span class="mnav__eyebrow">ARCHITHOR</span>
+          <span class="mnav__name">STUDIO</span>
+        </a>
+        <button class="mnav__close" id="mobileNavClose" aria-label="Close menu">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <ul class="mnav__list">
+        <li class="mnav__group">
+          <button class="mnav__link" type="button" data-mnav-toggle="#mnavGallery" aria-expanded="false">Gallery</button>
+          <div class="mnav__submenu" id="mnavGallery" hidden>
+            <button class="mnav__item" type="button" data-album="apt2">Apartment 2 (A2)</button>
+            <button class="mnav__item" type="button" data-album="apt4">Apartment 4 (B2)</button>
+            <button class="mnav__item" type="button" data-album="apt5">Apartment 5 (C1)</button>
+            <button class="mnav__item" type="button" disabled>Apartment 1 — COMING SOON</button>
+            <button class="mnav__item" type="button" disabled>Apartment 3 — COMING SOON</button>
+          </div>
+        </li>
+        <li><a class="mnav__link" href="#map">Map</a></li>
+        <li><a class="mnav__link" href="#technology">Technology</a></li>
+        <li><a class="mnav__link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- FIXED VIDEO LAYER -->
+  <div class="video-stage" aria-hidden="true">
+    <!-- Scene 0 (Intro) -->
+    <div class="scene" data-scene="0">
+      <video class="scene-video forward" id="video-0-fwd" muted playsinline preload="auto"
+             src="assets/videos/Video_Intro.mp4" poster="assets/posters/scene-01.jpg"></video>
+    </div>
+    <!-- Scene 1 -->
+    <div class="scene" data-scene="1">
+      <video class="scene-video forward" id="video-1-fwd" muted playsinline preload="auto"
+             src="assets/videos/Video_1.mp4" poster="assets/posters/scene-02.jpg"></video>
+      <video class="scene-video reverse" id="video-1-rev" muted playsinline preload="auto"
+             src="assets/videos/Video_1_reverse.mp4"></video>
+    </div>
+    <!-- Scene 2 -->
+    <div class="scene" data-scene="2">
+      <video class="scene-video forward" id="video-2-fwd" muted playsinline preload="auto"
+             src="assets/videos/Video_2.mp4" poster="assets/posters/scene-03.jpg"></video>
+      <video class="scene-video reverse" id="video-2-rev" muted playsinline preload="auto"
+             src="assets/videos/Video_2_reverse.mp4"></video>
+    </div>
+    <!-- Scene 3 -->
+    <div class="scene" data-scene="3">
+      <video class="scene-video forward" id="video-3-fwd" muted playsinline preload="auto"
+             src="assets/videos/Video_3.mp4" poster="assets/posters/scene-04.jpg"></video>
+      <video class="scene-video reverse" id="video-3-rev" muted playsinline preload="auto"
+             src="assets/videos/Video_3_reverse.mp4"></video>
+    </div>
+    <!-- Scene 4 -->
+    <div class="scene" data-scene="4">
+      <video class="scene-video forward" id="video-4-fwd" muted playsinline preload="auto"
+             src="assets/videos/Video_4.mp4" poster="assets/posters/scene-05.jpg"></video>
+      <video class="scene-video reverse" id="video-4-rev" muted playsinline preload="auto"
+             src="assets/videos/Video_4_reverse.mp4"></video>
+    </div>
+  </div>
+
+  <!-- SCROLLABLE TEXT LAYER -->
+  <div class="text-stage">
+    <!-- HERO INTRO (Scene 0) -->
+    <section class="scene-text hero-intro" data-scene-index="0">
+      <div class="hero-overlay">
+        <div class="hero-body">
+          <h1 class="hero-title">
+            <span data-i18n="hero.titleLine1">ArchiThor housing</span><br>
+            <span data-i18n="hero.titleLine2">estate</span>
+          </h1>
+          <p class="hero-lead" data-i18n="hero.lead">
+            A quiet place in a great neighborhood. Enjoy unlimited nature and the charms of city life in Hünenberg.
+          </p>
+
+          <div class="hero-actions">
+            <button type="button" class="hero-cta" id="openGalleryHero" data-i18n="hero.cta">Choose Apartment</button>
+            <div class="hero-loc">
+              <!-- Find this in the HERO INTRO, inside .hero-actions > .hero-loc -->
+<!-- Replace ONLY the pin span with the version below -->
+
+<span class="hero-loc__pin" aria-hidden="true">
+  <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+       viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+    <g id="Location_On">
+      <g>
+        <path d="M12,21.933a1.715,1.715,0,0,1-1.384-.691L5.555,14.5a7.894,7.894,0,1,1,12.885-.009L13.385,21.24A1.717,1.717,0,0,1,12,21.933ZM11.992,3.066A6.81,6.81,0,0,0,7.414,4.815a6.891,6.891,0,0,0-1.05,9.1l5.051,6.727a.725.725,0,0,0,.584.292h0a.732.732,0,0,0,.586-.292l5.044-6.734A6.874,6.874,0,0,0,12.81,3.113,7.277,7.277,0,0,0,11.992,3.066Z"></path>
+        <path d="M12,12.5A2.5,2.5,0,1,1,14.5,10,2.5,2.5,0,0,1,12,12.5Zm0-4A1.5,1.5,0,1,0,13.5,10,1.5,1.5,0,0,0,12,8.5Z"></path>
+      </g>
+    </g>
+  </svg>
+</span>
+              <div class="hero-loc__text">
+                <span class="hero-loc__city" data-i18n="hero.loc.cityLine">Hünenberg,</span>
+                <span class="hero-loc__addr" data-i18n-html="hero.loc.addressLine">Zug, Huobstrasse 73<br>Switzerland</span>
+              </div>
+            </div>
+          </div>
+
+          <hr class="hero-separator" />
+
+          <div class="hero-metrics">
+            <div class="hero-metric">
+              <div class="hero-metric__value">
+                <span data-i18n="hero.metrics.shopDistanceValue">0.5</span> <span class="unit">km</span>
+              </div>
+              <div class="hero-metric__label" data-i18n-html="hero.metrics.shopDistanceLabel">to shops and<br>bus stops</div>
+            </div>
+            <div class="hero-metric">
+              <div class="hero-metric__value">
+                <span data-i18n="hero.metrics.ringDistanceValue">2</span> <span class="unit">km</span>
+              </div>
+              <div class="hero-metric__label" data-i18n="hero.metrics.ringDistanceLabel">to E41 Highway</div>
+            </div>
+            <div class="hero-metric">
+              <div class="hero-metric__value">
+                <span data-i18n="hero.metrics.forestDistanceValue">2</span> <span class="unit">km</span>
+              </div>
+              <div class="hero-metric__label" data-i18n="hero.metrics.forestDistanceLabel">to Lake Zug</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOUSE / APARTMENT DETAIL (Scene 1) -->
+    <section class="scene-text house-detail house-detail--compact house-detail--tight" data-scene-index="1">
+      <div class="hd-wrap">
+        <div class="hd-inner">
+          <div class="hd-box">
+            <div class="hd-topline">
+              <div class="hd-code" data-i18n="houseDetail.code">C1</div>
+              <div class="hd-meta-group">
+                <div class="hd-meta">
+                  <span class="hd-meta__label" data-i18n="houseDetail.meta.plotLabel">m²</span>
+                  <span class="hd-meta__value" data-i18n="houseDetail.meta.plotValue">129.5</span>
+                </div>
+                <div class="hd-meta">
+                  <span class="hd-meta__label" data-i18n="houseDetail.meta.houseLabel">HOUSE, m²</span>
+                  <span class="hd-meta__value" data-i18n="houseDetail.meta.houseValue">107.5</span>
+                </div>
+                <div class="hd-meta hd-meta--price">
+                  <span class="hd-meta__label" data-i18n="houseDetail.meta.priceLabel">PRICE, EUR</span>
+                  <span class="hd-meta__value" data-i18n="houseDetail.meta.priceValue">835.000</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hd-date-row">
+              <div class="hd-date-label" data-i18n="houseDetail.meta.dateLabel">DATE</div>
+              <div class="hd-date-value" data-i18n="houseDetail.meta.dateValue">3Q/2026</div>
+            </div>
+
+            <div class="hd-spec-grid">
+              <div class="hd-spec hd-spec--with-ico hd-spec--dining">
+                <span class="hd-spec__label" data-i18n="houseDetail.spec.kitchenLabel">Kitchen, Living, Dining</span>
+                <span class="hd-spec__value" data-i18n="houseDetail.spec.kitchenValue">32.5 m²</span>
+              </div>
+              <div class="hd-spec hd-spec--with-ico hd-spec--bedroom">
+                <span class="hd-spec__label" data-i18n="houseDetail.spec.bed1Label">Bedroom</span>
+                <span class="hd-spec__value" data-i18n="houseDetail.spec.bed1Value">17.5 m²</span>
+              </div>
+              <div class="hd-spec hd-spec--with-ico hd-spec--bathroom">
+                <span class="hd-spec__label" data-i18n="houseDetail.spec.cabinet1Label">Bathroom</span>
+                <span class="hd-spec__value" data-i18n="houseDetail.spec.cabinet1Value">8 m²</span>
+              </div>
+              <div class="hd-spec hd-spec--with-ico hd-spec--garage">
+                <span class="hd-spec__label" data-i18n="houseDetail.spec.garageLabel">Garage</span>
+                <span class="hd-spec__value" data-i18n="houseDetail.spec.garageValue">22 m²</span>
+              </div>
+              <div class="hd-spec hd-spec--with-ico hd-spec--balcony">
+                <span class="hd-spec__label" data-i18n="houseDetail.spec.cabinet2Label">Balcony</span>
+                <span class="hd-spec__value" data-i18n="houseDetail.spec.cabinet2Value">27 m²</span>
+              </div>
+              <div class="hd-spec hd-spec--with-ico hd-spec--office">
+                <span class="hd-spec__label" data-i18n="houseDetail.spec.livingLabel">Office</span>
+                <span class="hd-spec__value" data-i18n="houseDetail.spec.livingValue">13 m²</span>
+              </div>
+              <div class="hd-spec hd-spec--with-ico hd-spec--entry">
+                <span class="hd-spec__label" data-i18n="houseDetail.spec.wardrobeLabel">Entry</span>
+                <span class="hd-spec__value" data-i18n="houseDetail.spec.wardrobeValue">8 m²</span>
+              </div>
+            </div>
+
+            <div class="hd-doc-cta">
+              <div class="hd-doc">
+                <div class="hd-doc__label" data-i18n="houseDetail.docLabel">House documentation</div>
+                <a class="hd-doc__file" href="assets/docs/HOUSE_DOCUMENTATION.pdf" target="_blank" rel="noopener"
+                   data-i18n="houseDetail.docFile">HOUSE_DOCUMENTATION.PDF</a>
+              </div>
+              <button type="button" class="hd-book-btn" data-i18n="houseDetail.bookCta">BOOK A CALL</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scene 3 -->
+    <section class="scene-text" data-scene-index="2">
+      <div class="overlay">
+        <h1 data-i18n="scenes.s3.title">Scene 3</h1>
+        <p data-i18n="scenes.s3.body">Feature highlight / dynamic transition sequence.</p>
+      </div>
+    </section>
+
+    <!-- Scene 4 -->
+    <section class="scene-text" data-scene-index="3">
+      <div class="overlay">
+        <h1 data-i18n="scenes.s4.title">Scene 4</h1>
+        <p data-i18n="scenes.s4.body">Deeper narrative — demonstrating complexity and depth.</p>
+      </div>
+    </section>
+
+    <!-- Scene 5 -->
+    <section class="scene-text" data-scene-index="4">
+      <div class="overlay">
+        <h1 data-i18n="scenes.s5.title">Scene 5</h1>
+        <p data-i18n="scenes.s5.body">Final message / wrap-up / call to action.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- LOCATION / MAP -->
+  <section id="map" class="loc-vp">
+    <div class="loc-panel">
+      <div class="loc-panel__inner">
+        <h2 class="loc-title" data-i18n="location.title">Location</h2>
+        <hr class="loc-separator" />
+        <ul class="loc-list">
+          <li><span class="loc-ico loc-ico--road" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.ring">E41 Highway</span><strong data-i18n="location.distances.ring">3 km</strong></div></li>
+          <li><span class="loc-ico loc-ico--bus" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.bus">Bus Stop</span><strong data-i18n="location.distances.bus">0.4 km</strong></div></li>
+          <li><span class="loc-ico loc-ico--play" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.play">Playground</span><strong data-i18n="location.distances.play">0.2 km</strong></div></li>
+          <li><span class="loc-ico loc-ico--school" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.school">Primary School</span><strong data-i18n="location.distances.school">1.5 km</strong></div></li>
+          <li><span class="loc-ico loc-ico--store" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.store">Grocery Store</span><strong data-i18n="location.distances.store">0.4 km</strong></div></li>
+          <li><span class="loc-ico loc-ico--clinic" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.clinic">Clinic</span><strong data-i18n="location.distances.clinic">0.5 km</strong></div></li>
+          <li><span class="loc-ico loc-ico--pharmacy" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.pharmacy">Pharmacy</span><strong data-i18n="location.distances.pharmacy">0.5 km</strong></div></li>
+          <li><span class="loc-ico loc-ico--nature" aria-hidden="true"></span><div><span class="loc-label" data-i18n="location.items.nature">Woods &amp; Lake</span><strong data-i18n="location.distances.nature">0.4 km</strong></div></li>
+        </ul>
+      </div>
+    </div>
+<div class="loc-map-wrap loc-map-static" id="staticMap">
+  <img
+    src="assets/map/map-location.jpg"
+    alt="Map preview showing project location in Hünenberg"
+    class="loc-map-img"
+    decoding="async"
+    loading="lazy">
+ <button
+        type="button"
+        class="loc-map-cta"
+        data-map-open
+        data-i18n-aria-label="location.map.takeMe"
+        aria-label="Take me there">
+        <span class="loc-map-cta__inner">
+          <span class="loc-map-cta__icon" aria-hidden="true"></span>
+          <!-- FIX: use nested key path -->
+          <span class="loc-map-cta__text" data-i18n="location.map.takeMe">Take me there</span>
+        </span>
+</button>
+</div>
+  </section>
+
+<!-- TECHNOLOGY SECTION -->
+<section id="technology" class="tech-vp">
+  <div class="tech-inner">
+    <h2 class="tech-title" data-i18n="tech.title">Construction technology</h2>
+    <hr class="tech-separator" />
+    <!-- Keep data-tech-grid for tech-reveal.js to animate items -->
+    <ul class="tech-grid" data-tech-grid>
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--walls" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-walls" xlink:href="#icon-walls"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.walls.h">Walls</h3>
+          <p data-i18n="tech.walls.p">Porotherm ceramic block</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--heating" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-heating" xlink:href="#icon-heating"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.heating.h">Heating</h3>
+          <p data-i18n="tech.heating.p">gas, underfloor</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--styro" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-styrofoam" xlink:href="#icon-styrofoam"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.styro.h">Styrofoam</h3>
+          <p data-i18n="tech.styro.p">facade 20cm</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--roof" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-roof" xlink:href="#icon-roof"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.roof.h">Roof</h3>
+          <p data-i18n="tech.roof.p">silicone plaster</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--recovery" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-heat-recovery" xlink:href="#icon-heat-recovery"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.recovery.h">Heat recovery</h3>
+          <p data-i18n="tech.recovery.p">heat recovery in ventilation system</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--facade" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-facade" xlink:href="#icon-facade"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.facade.h">Facade</h3>
+          <p data-i18n="tech.facade.p">silicone plaster, waterproof</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--windows" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-windows" xlink:href="#icon-windows"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.windows.h">Windows</h3>
+          <p data-i18n="tech.windows.p">warm, triple-glazed, energy-efficient plastic</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--inst" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-installations" xlink:href="#icon-installations"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.inst.h">Installations</h3>
+          <p data-i18n="tech.inst.p">electric, water supply, sewage, gas, fiber optic, central heating</p>
+        </div>
+      </li>
+
+      <li class="tech-item">
+        <span class="tech-ico tech-ico--ceilings" aria-hidden="true">
+          <svg class="tech-ico__svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <use href="#icon-ceilings" xlink:href="#icon-ceilings"></use>
+          </svg>
+        </span>
+        <div class="tech-item__text">
+          <h3 data-i18n="tech.ceilings.h">Ceilings</h3>
+          <p data-i18n="tech.ceilings.p">cast-in-place reinforced concrete</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="contact-vp">
+  <div class="contact-inner">
+    <!-- Left column: form -->
+    <div class="contact-left">
+      <h2 class="contact-title" data-i18n="contact.title">Let’s talk!</h2>
+
+      <p class="contact-form__eyebrow" data-i18n="contact.eyebrow">SEND THE EMAIL</p>
+      <form class="contact-form" action="#" method="post" novalidate>
+        <div class="cf-field">
+          <label class="cf-label" for="cf-name" data-i18n="contact.name">Name</label>
+          <input id="cf-name" name="name" type="text" placeholder="Jane Doe" autocomplete="name" required />
+        </div>
+
+        <div class="cf-field">
+          <label class="cf-label" for="cf-email" data-i18n="contact.email">Email</label>
+          <input id="cf-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+
+        <div class="cf-field cf-field--textarea">
+          <label class="cf-label" for="cf-message" data-i18n="contact.message">Tell us about your project</label>
+          <div class="cf-area">
+            <!-- Use localized placeholder text -->
+            <textarea id="cf-message" name="message" rows="6" maxlength="1000" required
+                      data-i18n-placeholder="contact.messagePH"></textarea>
+          </div>
+          <span id="cf-message-count" class="cf-count">(0 / 1000)</span>
+        </div>
+
+        <div class="cf-attach">
+          <button type="button" class="cf-attach-btn" data-attach>
+  <span class="cf-ico cf-ico--paperclip" aria-hidden="true"></span>
+  <span data-i18n="contact.attach">Add attachment</span>
+</button>
+          <input id="cf-attachment" name="attachment" type="file" hidden />
+          <span class="cf-attach-name" data-attach-name></span>
+        </div>
+
+        <div class="cf-actions">
+          <button type="submit" class="cf-btn cf-btn--solid" data-i18n="contact.send">SEND</button>
+          <button type="button" class="cf-btn cf-btn--outline" data-i18n="contact.book">BOOK A CALL</button>
+        </div>
+      </form>
+    </div>
+
+  <!-- Right column: contact info -->
+<aside class="contact-right">
+  <div class="cr-block">
+    <h4 data-i18n="contact.writeUs">WRITE US</h4>
+    <p class="cr-emph cr-email">
+      <span class="email-protected"
+            data-email
+            data-u="amFuLm5lbWVj"
+            data-d="YXJjaGl0aG9yLmNvbQ=="
+            data-label="Email us"></span>
+    </p>
+    <noscript><span>jan.nemec [at] archithor [dot] com</span></noscript>
+  </div>
+
+  <div class="cr-block">
+    <h4 data-i18n="contact.callUs">CALL US</h4>
+    <p class="cr-emph cr-phone">
+      <a href="tel:+38160000000">+381 60 000 000</a>
+    </p>
+  </div>
+
+  <div class="cr-block">
+    <h4 data-i18n="contact.address">ADDRESS</h4>
+    <p class="cr-emph cr-address">
+      Zug, Huobstrasse 73<br>Switzerland
+    </p>
+  </div>
+
+  <p class="cr-privacy">
+    We will use your contact details only to respond to your inquiry. If you sent this form by mistake or want
+    to remove your data, please email office@example.com. We will never send you spam or share your data with third parties.
+  </p>
+</aside>
+  </div>
+</section>
+
+
+  <!-- BRAND / DEVELOPER SHOWCASE -->
+  <section class="brand-ref" id="developer">
+    <!-- Background image showcase (decorative) -->
+    <ul class="brand-ref__gallery" aria-hidden="true">
+      <li><img src="assets/brand-showcase/apartments.jpg" alt="" loading="lazy" decoding="async"></li>
+      <li><img src="assets/brand-showcase/bedroom.jpg" alt="" loading="lazy" decoding="async"></li>
+      <li><img src="assets/brand-showcase/hotel-bedroom.jpg" alt="" loading="lazy" decoding="async"></li>
+      <li><img src="assets/brand-showcase/new-york.jpg" alt="" loading="lazy" decoding="async"></li>
+      <li><img src="assets/brand-showcase/pool-house.jpg" alt="" loading="lazy" decoding="async"></li>
+      <li><img src="assets/brand-showcase/scandy-bedroom.jpg" alt="" loading="lazy" decoding="async"></li>
+      <li><img src="assets/brand-showcase/villa.jpg" alt="" loading="lazy" decoding="async"></li>
+    </ul>
+
+    <div class="brand-ref__inner">
+      <div class="brand-ref__left">
+        <h2 class="brand-ref__title">Other projects of the developer</h2>
+        <p class="brand-ref__lead">Check out other projects on the developer's website</p>
+      </div>
+
+      <div class="brand-ref__right">
+        <!-- Clickable logo opens the main company website -->
+        <a class="brand-ref__logo-link" href="https://archithor.com/" target="_blank" rel="noopener">
+          <img
+            src="assets/brand/archithor-logo.png"
+            alt="Archithor — visit the company website"
+            class="brand-ref__logo"
+            loading="lazy" decoding="async">
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- Place this right after the closing </section> of your brand-ref section and before the inline SVG sprite -->
+<!-- Replace your existing footer block with this -->
+<footer class="site-footer" id="footer">
+  <div class="sf-inner">
+    <!-- Left: Brand -->
+    <a class="sf-brand" href="https://archithor.com/" target="_blank" rel="noopener">
+      <span class="sf-eyebrow">ARCHITHOR</span>
+      <span class="sf-name">STUDIO</span>
+    </a>
+
+    <!-- Middle: Footer nav -->
+    <nav class="sf-nav" aria-label="Footer">
+      <ul>
+        <!-- Updated: open company website -->
+        <li>
+          <a href="https://archithor.com/inspirativni-projekti-dizajna-enterijera/" target="_blank" rel="noopener">
+            GALLERY
+          </a>
+        </li>
+        <li><a href="#map">MAP</a></li>
+        <li><a href="#technology">TECHNOLOGY</a></li>
+      </ul>
+    </nav>
+
+     <!-- Right: Contact icons (both go to Contact page) -->
+    <div class="sf-contact">
+      <a class="sf-ico" href="https://archithor.com/kontaktirajte-nas/" target="_blank" rel="noopener" aria-label="Contact Archithor — Phone">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1v3.5a1 1 0 01-1 1C11.3 22.82 1.18 12.7 1.99 3.01A1 1 0 013 2h3.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.2 2.2z"/>
+        </svg>
+      </a>
+      <a class="sf-ico" href="https://archithor.com/kontaktirajte-nas/" target="_blank" rel="noopener" aria-label="Contact Archithor — Email">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5L4 8V6l8 5 8-5v2z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom credits -->
+  <div class="sf-credits">
+    <span class="sf-created"><span class="muted">Designed &amp; built by</span> <strong>Archithor Team</strong></span>
+  </div>
+</footer>
+
+  <!-- Inline SVG sprite -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+    <!-- symbols kept here (unchanged) -->
+    <symbol id="icon-walls" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="6" width="18" height="12" rx="1" ry="1"/>
+        <path d="M3 10h18M3 14h18M7 6v4M15 6v4M11 10v4M19 14v4"/>
+      </g>
+    </symbol>
+    <!-- other symbols ... -->
+  </svg>
+
+<!-- Gallery overlay (place just before </body>) -->
+<div class="gallery" id="gallery" aria-hidden="true">
+  <div class="gallery__backdrop" data-gallery-close></div>
+
+  <div class="gallery__dialog" role="dialog" aria-modal="true" aria-label="Apartment gallery">
+    <figure class="gallery__figure">
+      <img id="galleryImage" class="gallery__image" src="" alt="" />
+      <figcaption id="galleryCaption" class="gallery__caption" hidden></figcaption>
+    </figure>
+
+    <div id="galleryThumbs" class="gallery__thumbs" aria-label="Thumbnails"></div>
+
+    <button type="button" class="gallery__close" data-gallery-close aria-label="Close">&times;</button>
+
+    <!-- Nav buttons with your inline SVG icons -->
+    <button type="button" class="gallery__nav gallery__nav--prev" data-gallery-prev aria-label="Previous">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 512" aria-hidden="true" focusable="false">
+        <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path>
+      </svg>
+    </button>
+
+    <button type="button" class="gallery__nav gallery__nav--next" data-gallery-next aria-label="Next">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 512" aria-hidden="true" focusable="false">
+        <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+</body>
+</html>

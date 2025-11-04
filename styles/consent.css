@@ -1,0 +1,109 @@
+/* Cookie/consent banner and preferences dialog */
+:root{
+  --consent-z: 13000;                 /* above your gallery (12000) */
+  --consent-bg: #0f1216;
+  --consent-fg: #e9edf1;
+  --consent-muted: #b8c0c7;
+  --consent-border: rgba(255,255,255,0.12);
+  --consent-accent: #ffffff;          /* matches your pill CTAs */
+}
+
+.c-consent{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: var(--consent-z);
+  width: min(92vw, 360px);
+  background: var(--consent-bg);
+  color: var(--consent-fg);
+  border: 1px solid var(--consent-border);
+  border-radius: 12px;
+  box-shadow: 0 22px 60px -20px rgba(0,0,0,.6), 0 2px 0 rgba(255,255,255,0.05) inset;
+  padding: 16px 16px 12px;
+  display: none; /* shown by JS if needed */
+}
+.c-consent__title{
+  margin: 0 0 8px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  font-size: 16px;
+}
+.c-consent__text{
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--consent-muted);
+  line-height: 1.45;
+}
+.c-consent__actions{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.c-btn{
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid var(--consent-border);
+  color: #0f1216;
+  background: var(--consent-accent);
+}
+.c-btn--ghost{
+  background: transparent;
+  color: var(--consent-fg);
+}
+.c-consent__links{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+.c-consent__links a{
+  color: var(--consent-muted);
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+/* Preferences modal */
+.c-pref{
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--consent-z) + 1);
+  display: none;
+}
+.c-pref__backdrop{
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+}
+.c-pref__panel{
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  width: min(92vw, 520px);
+  background: var(--consent-bg);
+  color: var(--consent-fg);
+  border: 1px solid var(--consent-border);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,.6);
+}
+.c-pref__title{ margin: 0 0 10px; font-weight: 800; letter-spacing: -.02em; }
+.c-pref__row{
+  display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
+  padding: 10px 0; border-top: 1px solid var(--consent-border);
+}
+.c-pref__row:first-of-type{ border-top: 0; }
+.c-switch{
+  appearance: none; width: 46px; height: 26px; border-radius: 999px;
+  background: #2a2f36; position: relative; cursor: pointer; outline: none; border: 1px solid var(--consent-border);
+}
+.c-switch::after{
+  content:""; position:absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; transition: transform .18s ease;
+}
+.c-switch:checked{ background: #3a9c5a; }
+.c-switch:checked::after{ transform: translateX(20px); }
+.c-pref__actions{ display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px; }

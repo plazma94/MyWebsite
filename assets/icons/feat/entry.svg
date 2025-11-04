@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <g stroke="#EDEFF2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Door frame -->
+    <rect x="6" y="4" width="12" height="16" rx="1"/>
+    <!-- Door leaf (slightly ajar) -->
+    <path d="M12 6v12"/>
+    <!-- Knob -->
+    <path d="M13.5 12h.1"/>
+  </g>
+</svg>
